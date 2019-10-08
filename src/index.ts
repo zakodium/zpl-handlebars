@@ -1,6 +1,14 @@
 import * as Handlebars from 'handlebars';
 import { Image } from 'image-js';
 
+import { toFixed } from './helpers/numberFormat';
+
+const runtimeOptions = {
+  helpers: {
+    toFixed,
+  },
+};
+
 const compilerOptions = {
   noEscape: true,
   strict: true,
@@ -33,8 +41,6 @@ export function compile<T extends ZPLTemplateObject>(
 
 type ZPLTemplateDelegate<T> = (context: T) => string;
 
-const zplHelpers = {};
-
 function createDelegate<T extends ZPLTemplateObject>(
   delegate: Handlebars.TemplateDelegate,
 ): ZPLTemplateDelegate<T> {
@@ -53,10 +59,10 @@ function createDelegate<T extends ZPLTemplateObject>(
         imageDefs.push(converted);
         hContext.images[imgKey] = imageName;
       }
-      const str = delegate(hContext, zplHelpers);
+      const str = delegate(hContext, runtimeOptions);
       return `${imageDefs.join('\n')}\n${str}`;
     } else {
-      return delegate(hContext, zplHelpers);
+      return delegate(hContext, runtimeOptions);
     }
   };
 }

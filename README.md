@@ -49,6 +49,18 @@ FF
 */
 ```
 
+## Helpers
+
+### toFixed
+
+Formats a value using `Number(value).toFixed(decimals)`.  
+The `decimals` parameter is optional and defaults to `2`.
+
+```
+{{toFixed data.value}}
+{{toFixed data.value 3}}
+```
+
 ## License
 
 [MIT](./LICENSE)
