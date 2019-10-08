@@ -30,7 +30,7 @@ const myImage = new Image(8, 4, { kind: 'GREY' }); // Or load any image with Ima
 myImage.setPixelXY(2, 0, [255]);
 myImage.setPixelXY(3, 1, [255]);
 
-const zpl = compiled({ data: { value1: 'TEST' }, images: myImage });
+const zpl = compiled({ data: { value1: 'TEST' }, images: { myImage } });
 /*
 ~DGR:00000000.GRF,4,1,20100000
 ^XA

@@ -17,6 +17,11 @@ test('should error if some data is missing', () => {
   expect(() => compiled({ data: {} })).toThrow(/"x" not defined/);
 });
 
+test('should be type safe', () => {
+  const compiled = compile<{ data: { custom: number } }>('{{data.custom}}');
+  expect(compiled({ data: { custom: 1 } })).toBe('1');
+});
+
 test('should encode images', () => {
   // @ts-ignore
   const image1 = new Image(8, 4, { kind: 'GREY' });

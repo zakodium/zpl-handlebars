@@ -25,27 +25,25 @@ interface ZPLHandlebarsTemplateObject {
   };
 }
 
-export function compile(
+export function compile<T extends ZPLTemplateObject>(
   template: string,
-): ZPLTemplateDelegate<ZPLTemplateObject> {
-  return createDelegate(
-    Handlebars.compile<ZPLHandlebarsTemplateObject>(template, compilerOptions),
-  );
+): ZPLTemplateDelegate<T> {
+  return createDelegate<T>(Handlebars.compile(template, compilerOptions));
 }
 
 type ZPLTemplateDelegate<T> = (context: T) => string;
 
 const zplHelpers = {};
 
-function createDelegate(
-  delegate: Handlebars.TemplateDelegate<ZPLHandlebarsTemplateObject>,
-): ZPLTemplateDelegate<ZPLTemplateObject> {
-  return function zplTemplateDelegate(context?: ZPLTemplateObject): string {
+function createDelegate<T extends ZPLTemplateObject>(
+  delegate: Handlebars.TemplateDelegate,
+): ZPLTemplateDelegate<T> {
+  return function zplTemplateDelegate(context: T): string {
     const hContext: ZPLHandlebarsTemplateObject = {
-      data: context ? context.data || {} : {},
+      data: context.data || {},
       images: {},
     };
-    if (context && context.images) {
+    if (context.images) {
       const imageDefs: string[] = [];
       let imageId = 0;
       for (const imgKey of Object.keys(context.images)) {
