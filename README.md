@@ -15,7 +15,7 @@ ZPL label templating using Handlebars.
 
 ```js
 import { compile } from 'zpl-handlebars';
-impart { Image } from 'image-js';
+import { Image } from 'image-js';
 
 const template = `
 ^XA
