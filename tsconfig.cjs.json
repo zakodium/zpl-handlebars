@@ -3,7 +3,8 @@
   "compilerOptions": {
     "module": "commonjs",
     "outDir": "lib",
-    "declaration": true
+    "declaration": true,
+    "skipLibCheck": true
   },
   "exclude": ["./src/**/__tests__"]
 }
