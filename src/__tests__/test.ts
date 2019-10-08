@@ -23,32 +23,57 @@ test('should be type safe', () => {
 });
 
 test('should encode images', () => {
-  // @ts-ignore
-  const image1 = new Image(8, 4, { kind: 'GREY' });
-  image1.setPixelXY(2, 0, [255]);
-  image1.setPixelXY(3, 1, [255]);
+  // prettier-ignore
+  const image1 = new Image(8, 4, [
+    0, 0, 0, 0, 0, 0, 0, 0,
+    255, 0, 255, 255, 0, 255, 255, 255,
+    255, 255, 0, 255, 255, 255, 255, 0,
+    255, 255, 255, 255, 255, 255, 255, 255
+    // @ts-ignore
+  ], { kind: 'GREY' });
 
   // @ts-ignore
   const image2 = new Image(8, 1, { kind: 'BINARY' });
-  image2.setBitXY(0, 1);
+  image2.setBitXY(2, 0);
 
-  const compiled = compile('TEST\n{{images.image1}}\n{{images.image2}}');
-  expect(compiled({ images: { image1, image2 } }))
-    .toBe(`~DGR:00000000.GRF,4,1,20100000
-~DGR:00000001.GRF,1,1,00
+  const image3 = new Image(8, 1);
+
+  const compiled = compile(
+    'TEST\n{{images.image1}}\n{{images.image2}}\n{{images.image3}}',
+  );
+  expect(compiled({ images: { image1, image2, image3 } }))
+    .toBe(`~DGR:00000000.GRF,4,1,
+FF
+48
+21
+00
+~DGR:00000001.GRF,1,1,
+DF
+~DGR:00000002.GRF,1,1,
+FF
 TEST
 00000000.GRF
-00000001.GRF`);
+00000001.GRF
+00000002.GRF`);
 });
 
-test('should throw for bad image size', () => {
+test('should work with image width not multiple of 8 for bad image size', () => {
   // @ts-ignore
-  const image1 = new Image(2, 5, { kind: 'GREY' });
-  image1.setPixelXY(0, 2, [255]);
-  image1.setPixelXY(1, 3, [255]);
+  const image1 = new Image(2, 5, { kind: 'BINARY' });
+  image1.setBitXY(1, 0);
+  image1.setBitXY(0, 1);
+  image1.setBitXY(0, 3);
+  image1.setBitXY(1, 3);
+  image1.setBitXY(0, 4);
+  image1.setBitXY(1, 4);
 
   const compiled = compile('TEST\n{{images.image1}}');
-  expect(() => compiled({ images: { image1 } })).toThrow(
-    /images must have a width divisible by eight/,
-  );
+  expect(compiled({ images: { image1 } })).toBe(`~DGR:00000000.GRF,5,1,
+BF
+7F
+FF
+3F
+3F
+TEST
+00000000.GRF`);
 });

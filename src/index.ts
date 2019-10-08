@@ -62,22 +62,43 @@ function createDelegate<T extends ZPLTemplateObject>(
 }
 
 function convertImage(image: Image, name: string): string {
-  if (image.width % 8 !== 0) {
-    throw new Error('images must have a width divisible by eight');
-  }
   if (image.bitDepth > 1) {
     if (image.bitDepth !== 8 || image.channels > 1) {
       // @ts-ignore
       image = image.rgba8().grey();
     }
     // Convert image to binary
-    image = image.mask({ algorithm: 'threshold', threshold: 128 });
+    image = image.mask({
+      algorithm: 'threshold',
+      threshold: 128,
+      invert: true,
+    });
+  } else {
+    image = image.invert();
   }
-  const totalBytes = (image.width * image.height) / 8;
-  const bytesPerRow = image.width / 8;
+  let totalBytes = 0;
+  const bytesPerRow = Math.ceil(image.width / 8);
   const hexData: string[] = [];
-  for (const value of image.data) {
-    hexData.push(value.toString(16).padStart(2, '0'));
+  for (let y = 0; y < image.height; y++) {
+    hexData.push('\n');
+    for (let x = 0; x < image.width; x += 8) {
+      let byte = 0;
+      for (let i = 0; i < 8; i++) {
+        if (x + i < image.width) {
+          byte = (byte << 1) | image.getBitXY(x + i, y);
+        } else {
+          byte = (byte << 1) | 1;
+        }
+      }
+      hexData.push(
+        byte
+          .toString(16)
+          .toUpperCase()
+          .padStart(2, '0'),
+      );
+      totalBytes++;
+      byte = 0;
+    }
   }
   return `~DGR:${name},${totalBytes},${bytesPerRow},${hexData.join('')}`;
 }
