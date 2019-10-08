@@ -5,7 +5,7 @@
 [![Test coverage][codecov-image]][codecov-url]
 [![npm download][download-image]][download-url]
 
-ZPL templating using Handlebars.
+ZPL label templating using Handlebars.
 
 ## Installation
 
@@ -14,10 +14,30 @@ ZPL templating using Handlebars.
 ## Usage
 
 ```js
-import { myModule } from 'zpl-handlebars';
+import { compile } from 'zpl-handlebars';
+impart { Image } from 'image-js';
 
-const result = myModule(args);
-// result is ...
+const template = `
+^XA
+^FO150,125^ADN,36,20^FD{{data.value1}}^FS
+^FO100,100^XGR:{{images.myImage}},1,1^FS
+^XZ
+`;
+
+const compiled = compile(template);
+
+const myImage = new Image(8, 4, { kind: 'GREY' }); // Or load any image with Image.load()
+myImage.setPixelXY(2, 0, [255]);
+myImage.setPixelXY(3, 1, [255]);
+
+const zpl = compiled({ data: { value1: 'TEST' }, images: myImage });
+/*
+~DGR:00000000.GRF,4,1,20100000
+^XA
+^FO150,125^ADN,36,20^FDTEST^FS
+^FO100,100^XGR:00000000.GRF,1,1^FS
+^XZ
+*/
 ```
 
 ## License
