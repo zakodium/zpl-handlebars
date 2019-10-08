@@ -26,13 +26,22 @@ const template = `
 
 const compiled = compile(template);
 
-const myImage = new Image(8, 4, { kind: 'GREY' }); // Or load any image with Image.load()
-myImage.setPixelXY(2, 0, [255]);
-myImage.setPixelXY(3, 1, [255]);
+// prettier-ignore
+const myImage = new Image(8, 4, [ // Or load any image with Image.load()
+    0,   0,   0,   0,   0,   0,   0,   0,
+  255,   0, 255, 255,   0, 255, 255, 255,
+  255, 255,   0, 255, 255, 255, 255,   0,
+  255, 255, 255, 255, 255, 255, 255, 255
+  // @ts-ignore
+], { kind: 'GREY' });
 
 const zpl = compiled({ data: { value1: 'TEST' }, images: { myImage } });
 /*
-~DGR:00000000.GRF,4,1,20100000
+~DGR:00000000.GRF,4,1,
+FF
+48
+21
+00
 ^XA
 ^FO150,125^ADN,36,20^FDTEST^FS
 ^FO100,100^XGR:00000000.GRF,1,1^FS
