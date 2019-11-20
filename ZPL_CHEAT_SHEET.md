@@ -47,7 +47,7 @@ Format: `^FWr,z`
 Parameters:
 
 - `r`: rotate field, N (normal), R (90°), I (180°), B (270°) (initial: N)
-- `z`: justification, 0 (left), 1 (right), 2 (auto) (default: autor for `^TB` and left for other commands)
+- `z`: justification, 0 (left), 1 (right), 2 (auto) (default: auto for `^TB` and left for other commands)
 
 ## General commands
 
@@ -83,6 +83,12 @@ Used to denote the end of a field.
 Sets the field origin relative to the label home position.
 
 Format: `^FOx,y,z`
+
+Parameters:
+
+- `x`: x location (default: 0)
+- `y`: y location (default: 0)
+- `z`: justification, 0 (left), 1 (right), 2 (auto) (default: value of `^FW`)
 
 ### `^FR`: Field reverse print
 
