@@ -22,7 +22,7 @@ Format: `^CFf,h,w`
 
 Parameters:
 
-- `f`: font (default: A)
+- `f`: font, A-Z0-9 (default: A)
 - `h`: character height (default: 9)
 - `w`: character width (default: 5)
 
@@ -37,6 +37,17 @@ Format: `^CFx,y`
 Reverses the printing of all subsequent fields.
 
 Format: `^LRa` with a= N or Y.
+
+### `^FW`: Field orientation
+
+Sets the default orientation for all fields that have an orientation parameter.
+
+Format: `^FWr,z`
+
+Parameters:
+
+- `r`: rotate field, N (normal), R (90°), I (180°), B (270°) (initial: N)
+- `z`: justification, 0 (left), 1 (right), 2 (auto) (default: autor for `^TB` and left for other commands)
 
 ## General commands
 
@@ -79,6 +90,19 @@ If this command is used before a field, the color of the output will be the
 reverse of its background.
 
 ## Text and graphic commands
+
+### `^A`: Font
+
+Specify the font used for the next `^FD` field.
+
+Format: `^Afo,h,w`
+
+Parameters:
+
+- `f`: font name, A-Z0-9
+- `o`: field orientation, N (normal), R (90°), I (180°), B (270°) (default: value of `^FW`)
+- `h`: character height (default: value of `^CF`)
+- `w`: character width (default: value of `^CF`)
 
 ### `^FD`: Field data string
 
