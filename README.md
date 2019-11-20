@@ -11,6 +11,11 @@ ZPL label templating using Handlebars.
 
 `$ npm i zpl-handlebars`
 
+## ZPL References
+
+- [Specification](https://www.zebra.com/content/dam/zebra/manuals/printers/common/programming/zpl-zbi2-pm-en.pdf).
+- [Cheat sheet](./ZPL_CHEAT_SHEET.md)
+
 ## Usage
 
 ```js
