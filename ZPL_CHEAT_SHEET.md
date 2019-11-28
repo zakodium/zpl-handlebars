@@ -120,6 +120,20 @@ Format: `^FDa`
 ^FDMy text^FS
 ```
 
+### `^FB`: Field block
+
+Multi-line text with word wrap
+
+Format: `^FDw,l,s,j,i`
+- `w`: width in dots
+- `l`: max number of lines in the block (oveflow is hidden)
+- `s`: space in dots to add (or remove if number is negative) between lines
+- `j`: justification of text: `L` for left `R` for right, `C` for center, `J` for justified
+
+```zpl
+^FB250,4^FDMulti line text.^FS
+```
+
 ### `^GB`: Graphic box
 
 This allows to draw boundary rectangles or lines.
