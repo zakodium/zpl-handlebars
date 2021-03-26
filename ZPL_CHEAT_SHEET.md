@@ -49,6 +49,12 @@ Parameters:
 - `r`: rotate field, N (normal), R (90°), I (180°), B (270°) (initial: N)
 - `z`: justification, 0 (left), 1 (right), 2 (auto) (default: auto for `^TB` and left for other commands)
 
+### `^PO`: Print orientation
+
+Turns the label format by 180 degrees. The `^POI` command inverts the x,y coordinates.
+
+Format: `POa` with a= N (normal) or I (invert).
+
 ## General commands
 
 ### `^XA`, `^XZ`: Start and end of label
